@@ -2,41 +2,38 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../sequelize.js';
 
 const Package = sequelize.define('Package', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    name_pkg: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+    },
     price: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     },
     quantity: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     },
     date_start: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
     },
     date_end: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
     },
     available: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
-    },
-    hour_start: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    hour_end: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    join_catg: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     capacity: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
     }
 })
 
