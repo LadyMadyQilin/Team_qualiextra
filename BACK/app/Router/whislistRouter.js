@@ -6,18 +6,13 @@ import roleGuard from '../middlewares/roleGuard.js';
 
 const wishlistRouter = express.Router();
 
-
-wishlistRouter.get('/wishlist', jwtGuard, roleGuard({ role: ['user'] }), (req, res) => {
-    res.json('récupérer de toutes les favoris');
-});
-wishlistRouter.get('/wishlist/:id', jwtGuard, roleGuard({ role: ['user'] }), (req, res) => {
-    res.json('récupérer d\ un favoris');
-});
-wishlistRouter.post('/wishlist', jwtGuard, roleGuard({ role: ['user'] }), (req, res) => {
-    res.json('créer d\ un favoris');
-});
-wishlistRouter.delete('/wishlist/:id', jwtGuard, roleGuard({ role: ['user'] }), (req, res) => {
-    res.json('supprimer un favoris');
-});
+// récupérer toute la liste des favoris 
+wishlistRouter.get('/wishlist', jwtGuard, roleGuard({ roles: ['user'] }));
+// recupérer une liste favorie
+wishlistRouter.get('/wishlist/:id', jwtGuard, roleGuard({ roles: ['user'] }));
+// créer un favoris
+wishlistRouter.post('/wishlist', jwtGuard, roleGuard({ roles: ['user'] }));
+// supprimer un favoris
+wishlistRouter.delete('/wishlist/:id', jwtGuard, roleGuard({ roles: ['user'] }));
 
 export default wishlistRouter;
