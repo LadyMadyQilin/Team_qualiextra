@@ -58,7 +58,7 @@ const authController = {
       // passer un token dans une URL front qui va chercher une URL back
 
       // Configuration du transport Nodemailer
-      const sendEmail = async function (to, subject, text, html, validationLink) {
+      const sendEmail = async function (to, subject, text, html) {
         const transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST,
           port: process.env.SMTP_PORT,
