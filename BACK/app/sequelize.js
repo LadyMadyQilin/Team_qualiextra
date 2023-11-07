@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 
 
 dotenv.config();
-const sequelize = new Sequelize(process.env.PG_URL);
+const sequelize = new Sequelize(process.env.PG_URL, {logging: console.log});
 
 // Vérifiez la connexion
 try {
