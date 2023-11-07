@@ -2,30 +2,28 @@ import express from 'express';
 
 import { jwtGuard } from '../middlewares/jwtGuard.js';
 import roleGuard from '../middlewares/roleGuard.js';
-import institutionProviderController from '../controllers/ProviderController/InstitutionProviderController.js';
-import serviceProviderController from '../controllers/ProviderController/serviceProviderController.js';
-
+import institutionProviderController from '../controllers/providerController/institutionProviderController.js';
+import serviceProviderController from '../controllers/providerController/serviceProviderController.js';
 
 const institutionRouter = express.Router();
 
-//récupérer tous les établissements 
-institutionRouter.get('/institution', jwtGuard, roleGuard({ role: ['admin', 'provider'] }), institutionProviderController.getAllInstitutions)
+//récupérer tous les établissements , jwtGuard, roleGuard({ role: ['admin', 'provider'] })
+institutionRouter.get('/institution', institutionProviderController.getAllInstitutions)
 
 //récupérer un établissement 
-
-institutionRouter.get('/institution/:id', jwtGuard, roleGuard({ role: ['admin', 'provider'] }), institutionProviderController.getOneInstitution)
+institutionRouter.get('/institution/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), institutionProviderController.getOneInstitution)
 
 //récupérer un service selon id de l'institution
-institutionRouter.get('/institutions/:id/services', jwtGuard, roleGuard({ role: ['admin', 'provider'] }), serviceProviderController.getAllServicesByInstitutionId);
+institutionRouter.get('/institutions/:id/services', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), serviceProviderController.getAllServicesByInstitutionId);
 
 
 //ajouter un établissement
-institutionRouter.post('/institution', jwtGuard, roleGuard({ role: ['provider'] }), institutionProviderController.addInstitution)
+institutionRouter.post('/institution', jwtGuard, roleGuard({ roles: ['provider'] }), institutionProviderController.addInstitution)
 
 //modifier un établissement 
-institutionRouter.put('/institution/:id', jwtGuard, roleGuard({ role: ['admin', 'provider'] }), institutionProviderController.updateInstitution)
+institutionRouter.put('/institution/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), institutionProviderController.updateInstitution)
 
 //supprimer un établissement
-institutionRouter.delete('/institution/:id', jwtGuard, roleGuard({ role: ['admin', 'provider'] }), institutionProviderController.deleteInstitution)
+institutionRouter.delete('/institution/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), institutionProviderController.deleteInstitution)
 
 export default institutionRouter;
