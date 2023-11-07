@@ -1,0 +1,32 @@
+.addService {
+    background-color: white;
+    padding: 3rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    &__title {
+        font-size: 1.5rem;
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    &__form fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    &__form fieldset legend {
+        margin-bottom: 1rem;
+    }
+    &__boxDispo {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

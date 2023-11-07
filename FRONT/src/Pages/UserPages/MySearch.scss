@@ -1,0 +1,49 @@
+@use '../../components/App/mixin.scss';
+@use '../../components/App/vars.scss';
+
+.MySearch__container {
+    display: flex;
+    flex-direction: row;
+
+
+    .MySearch__cardContainer {
+        background-color: vars.$background_grey;
+        color: vars.$font_blue;
+        border: 1px solid black;
+        padding: 3rem;
+        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0.5rem;
+        width: 50%;
+        box-sizing: border-box;
+        justify-content: space-around;
+        align-items: center;
+        gap: 1rem;
+
+        .MySearch__title {
+            font-size: 3rem;
+        }
+
+
+        .MySearch__card {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @include mixin.smallTablets {
+            .MySearch__container {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .MySearch__card {
+                grid-template-columns: repeat(2, 1fr);
+                grid-gap: 20px;
+            }
+        }
+
+    }
+
+}

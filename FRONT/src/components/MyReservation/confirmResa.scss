@@ -1,0 +1,41 @@
+.confirmResa {
+    border-radius: 1rem;
+    background-color: white;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 0.5rem;
+    &__title {
+        font-size: 2rem;
+    }
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    &__container p {
+        font-size: 1.5rem;
+        text-align: center;
+        
+    }
+    &__container button {
+        font-size: 1.3rem;
+        text-align: center;
+        border: 1px solid black;
+        padding: 0.5rem 0.3rem;
+        border-radius: 1rem;
+    }
+    &__container a {
+        text-decoration: underline;
+    }
+    &__img {
+        width: 30%;
+    }
+    &__subtitle {
+        font-size: 1.7rem;
+    }
+    
+}

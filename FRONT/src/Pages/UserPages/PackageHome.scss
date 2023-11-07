@@ -1,0 +1,69 @@
+@use '../../components/App/mixin.scss';
+@use '../../components/App/vars.scss';
+
+.GridChoice__container {
+    background-color: vars.$background_grey;
+    color: vars.$font_blue;
+    border: 1px solid black;
+    padding: 3rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-around;
+    gap: 1rem;
+
+    .Text__title {
+        font-size: 3rem;
+        color: vars.$font_orange;
+        margin-bottom: 2rem;
+    }
+
+    .Text__paragraph {
+        margin-bottom: 20px;
+    }
+
+    .Text__list {
+        list-style-type: disc;
+        margin-left: 40px;
+    }
+
+    .Text__button {
+        margin-top: 2rem;
+        margin-left: 5rem;
+        width: auto;
+        padding: 0.5rem;
+        border-radius: 5rem;
+        background-color: vars.$background_blue;
+        color: white;
+        cursor: pointer;
+    }
+}
+
+.PicMap__container{
+    background-color: vars.$background_blue;
+    color: vars.$font_blue;
+    border: 1px solid black;
+    padding: 3rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+@include mixin.smallTablets {
+    .GridChoice__container {
+        display: flex;
+        flex-direction: row;
+    }
+    .PicMap__container{
+        display: flex;
+        flex-direction: row;
+    }
+}

@@ -1,0 +1,74 @@
+@use '../../components/App/mixin.scss';
+@use '../../components/App/vars.scss';
+
+.grid__container {
+    width: auto;
+    height: 30%;
+    gap: 1rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: vars.$background_blue;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .grid__inputDate {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .grid__boxcontainer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        justify-content: left;
+        margin: 1rem 0;
+    }
+
+    .grid__label {
+        color: vars.$font_orange;
+    }
+
+    .grid__input{
+        width: 50%;
+        border: none;
+        border-bottom: 1px solid vars.$font_orange;
+        background-color: vars.$background_blue;
+    }
+
+    .grid__buttonMembers{
+        color: vars.$font_orange;
+        cursor: pointer;
+    }
+
+    .grid__resultContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .grid__price {
+        color: vars.$font_orange;
+        text-decoration: underline;
+        margin-top: 0.5rem;
+    }
+
+    .grid__button {
+        background-color: white;
+        width: auto;
+        padding: 0.5rem;
+        border-radius: 5rem;
+        font-weight: bold;
+        color: vars.$font_orange;
+        cursor: pointer;
+    }
+}
+
+@include mixin.smallTablets {
+    .grid__resultContainer {
+        display: flex;
+        flex-direction: column;
+    }
+}
