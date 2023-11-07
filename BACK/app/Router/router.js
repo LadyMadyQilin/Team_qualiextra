@@ -9,6 +9,7 @@ import packagesRouter from './packagesRouter.js';
 import servicesRouter from './servicesRouter.js'
 import wishlistRouter from './whislistRouter.js';
 import backendRouter from './backendRouter.js';
+import searchRouter from './searchRouter.js';
 
 const router = express.Router();
 
@@ -23,6 +24,7 @@ router.use(packagesRouter);
 router.use(servicesRouter);
 router.use(wishlistRouter);
 router.use(backendRouter);
+router.use(searchRouter);
 
 
 export default router;
