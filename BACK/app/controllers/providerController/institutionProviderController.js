@@ -1,8 +1,9 @@
 import * as models from '../../models/index.js';
 
 const institutionProviderController = {
-  addInstitution: async function (req, res) {
-    //je récupére le formulaire
+
+  addInstitution: async (req, res) => {
+    // Récupération des données du formulaire
     const {
       name_ins,
       cover,
@@ -14,42 +15,46 @@ const institutionProviderController = {
       average_price,
       experiences,
     } = req.body;
+
     const user_id = req.user.id;
 
     try {
       const ins = await models.Institution.create({
         name_ins,
         cover,
-        email_ins: email_ins.toLowerCase(),
+        email_ins: email_ins.toLowerCase(), // Conversion en minuscules
         adress_ins,
         city_ins,
         cp_ins,
-        phone_ins: parseInt(phone_ins),
+        phone_ins: parseInt(phone_ins), // Conversion en nombre
         average_price,
         experiences,
-        user_id,
+        user_id
       });
-      res.status(201).send("institution has been created");
+
+      res.status(201).json({ message: "L'institution a été créée." });
     } catch (error) {
-      res.status(401).json({ message: error.message });
+      res.status(401).json({ errorMessage: error.message });
     }
   },
 
-  getAllInstitutions: async function (req, res) {
+  getAllInstitutions: async (req, res) => {
     try {
-      const ins = await models.Institution.findAll();
-      res.json(ins);
+      const institutions = await models.Institution.findAll();
+      res.json(institutions);
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
     }
   },
 
-  getAllInstitutionByProviderId: async function (req, res) {
+  getAllInstitutionByProviderId: async (req, res) => {
     try {
       const userId = req.user.id;
+  
       if (!userId) {
-        res.status(401).json("pas le droit");
+        return res.status(400).json({ errorMessage: "L'ID de l'utilisateur est requis." });
       }
+  
       const institutions = await models.Institution.findAll({
         where: {
           user_id: userId,
@@ -59,45 +64,46 @@ const institutionProviderController = {
           model: models.User,
         },
       });
-
+      //! ne pas mettre en accolade 
       res.json(institutions);
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
     }
   },
+  
 
-  getOneInstitutionByIdProvider: async function (req, res) {
+  getOneInstitutionByProviderId: async (req, res) => {
     try {
       const userId = req.user.id;
 
       if (userId) {
-        const institutions = await models.Institution.findOne(institutionId, {
+        const institutionId = await models.Institution.findOne({
           where: {
             user_id: userId,
           },
-          include: [
+          include:
             {
-              model: User,
+              model: models.User,
               as: "user",
             },
-          ],
         });
+        res.json({ institutionId });
       }
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
     }
   },
 
-  getOneInstitution: async function (req, res) {
+  getOneInstitution: async (req, res) => {
     try {
       const ins = await models.Institution.findOne();
-      res.json(ins);
+      res.json({ ins });
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
     }
   },
 
-  updateInstitution: async function (req, res) {
+  updateInstitution: async (req, res) => {
     const { institutionId } = req.params;
     const {
       name_ins,
@@ -110,11 +116,12 @@ const institutionProviderController = {
       average_price,
       experiences,
     } = req.body;
+
     try {
       const ins = await models.Institution.findByPk(institutionId);
 
       if (!ins) {
-        return res.status(404).json({ message: "institution non trouvé" });
+        return res.status(404).json({ message: "L'établissement n'a pas été trouvée." });
       }
 
       ins.name_ins = name_ins;
@@ -129,37 +136,29 @@ const institutionProviderController = {
 
       // Enregistrez les modifications dans la base de données
       await ins.save();
-      res.status(201).send("institution has been modified");
-
-      // Répondez avec le service mis à jour
-      return res.status(200).json({ ins });
+      return res.status(200).json({ message: "L'institution a été modifiée." });
     } catch (error) {
-      res.status(401).json({ message: error.message });
+      res.status(401).json({ errorMessage: error.message });
     }
   },
 
-  deleteInstitution: async function (req, res) {
-    const { institutionId } = req.params; // Obtenez l'ID du client à partir des paramètres d'URL
+  deleteInstitution: async (req, res) => {
+    const { institutionId } = req.params;
 
     try {
-      // Recherchez le client dans la base de données
       const ins = await models.Institution.findByPk(institutionId);
 
       if (!ins) {
-        return res.status(404).json({ message: "Institution non trouvé" });
+        return res.status(404).json({ message: "L'institution n'a pas été trouvée." });
       }
 
-      // supprimer dans la base de données
-      //!methode destroy et pas delete
       await ins.destroy();
 
-      // Répondez avec le client est supprimé
-      return res.status(200).json({ message: "Institution is delete" });
+      return res.status(200).json({ message: "L'institution a été supprimée." });
     } catch (error) {
       return res.status(500).json({ errorMessage: error.message });
     }
-  },
+  }
 };
-
 
 export default institutionProviderController;
