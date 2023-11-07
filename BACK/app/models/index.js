@@ -23,6 +23,22 @@ Category.belongsToMany(Service, {
     otherKey: 'service_id'
 });
 
+//0,N - relation de N à N - manyToMany => belongsToMany (conbinaision de 0,N et 1,N)
+Package.belongsToMany(Style, {
+    as: 'style',
+    through: 'package_has_style',
+    foreignKey: 'package_id',
+    otherKey: 'style_id'
+});
+// 1,N
+Style.belongsToMany(Package, {
+    as: 'package',
+    through: 'package_has_style',
+    foreignKey: 'style_id',
+    otherKey: 'package_id'
+});
+
+
 //Association des entités service/institution
 //0,N - oneToMany - 1,N - clé étrangère du côté du N car on veut retrouver ses many services donc on met institution_id dans institution et services
 Institution.hasMany(Service, {
@@ -63,21 +79,24 @@ Purchase.belongsToMany(Package, {
     otherKey: 'package_id'
 });
 
-//Association des entités package/service
-//1,N 
+
+
 Package.belongsToMany(Service, {
     as: 'services',
-    through: 'package_has_service',
-    foreignKey: 'service_id',
-    otherKey: 'package_id'
+    through: 'service_has_package',
+    foreignKey: 'package_id',
+    otherKey: 'service_id'
 });
 //1,N
 Service.belongsToMany(Package, {
     as: 'packages',
-    through: 'package_has_service',
+    through: 'service_has_package',
     foreignKey: 'package_id',
     otherKey: 'service_id'
 });
+
+
+
 
 //Association des entités service/image
 //0,N
@@ -88,7 +107,8 @@ Image.hasMany(Service, {
 //1,1 - un service une image
 Service.belongsTo(Image, {
     as: 'image',
-    foreignKey: 'service_id'
+    foreignKey: 'service_id',
+
 });
 
 //Association des entités user/service
@@ -130,4 +150,4 @@ Institution.belongsToMany(Style,{
     otherKey: 'institution_id'
 });
 
-export { User, Category, Image, Institution, Package, Purchase, Service, Style };
+export { User, Category, Image, Institution, Service, Package, Purchase,  Style };
