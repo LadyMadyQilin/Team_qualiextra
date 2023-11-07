@@ -2,14 +2,17 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../sequelize.js';
 
 const Category = sequelize.define('Category', {
-    name_catg: {
-        type: DataTypes.STRING,
-        allowNull: true,
+    id: {
+        type: DataTypes.FLOAT,
+        primaryKey: true,
+        autoIncrement: true,
+        // ! toujours défini
+        allowNull: false,
     },
-    description_catg: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    }
+    name_catg: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+    },
 })
 
 export default Category;
