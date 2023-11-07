@@ -15,10 +15,13 @@ loginRouter.post('/register', authController.register)
 //route de création des provider(uniquement créer par l'admin)
 
 //a rajouter une fois les tests finis :  
-loginRouter.post('/register-provider', jwtGuard, roleGuard({ role: ['admin'] }), adminController.registerProvider)
+loginRouter.post('/register-provider', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.registerProvider)
 
 //route pour la connexion
 loginRouter.post('/login', authController.login);
+
+// validation d'email.
+loginRouter.get('/validation-email/:token', authController.validationEmail);
 //route pour le profil
 loginRouter.get('/profile', jwtGuard, userController.profile);
 
