@@ -1,6 +1,6 @@
 # Qualiextra
 
-Groupe : Benjamin, Andréa, Sarah, Amel et Déborah
+Groupe : Benjamin, Andréa, Sarah et Déborah
 
 ## La présentation du projet
 
@@ -35,11 +35,11 @@ Quali-extra est une plateforme numérique innovante visant à révolutionner l'e
 
 ## La liste des technologies utilisées pour le projet (spécifications techniques)
 
-- REACT / JavaScript Front-end    (Andréa / Sarah / Benjamin / Amel / Déborah)
-- NodeJS (expressJS) / JavaScript Back-end (Déborah / Benjamin /Amel)
-- PROSTGRESQL : demande d’ajout de l’accessibilité au restaurant et à l’hôtel via le formulaire d’inscription, découper l’adresse en plusieurs items (villes insérer dans une BDD remplie par Prestataire afin de l’utiliser dynamiquement et remplir la BDD) (Déborah)
-- CSS/SASS (Andréa / Sarah / Benjamin)
-- HTML (JSX) (Andréa / Sarah / Benjamin / Amel / Déborah)
+- REACT / JavaScript Front-end (Sarah / Benjamin)
+- NodeJS (expressJS) / JavaScript Back-end (Déborah / Benjamin)
+- POSTGRESQL : demande d’ajout de l’accessibilité au restaurant et à l’hôtel via le formulaire d’inscription, découper l’adresse en plusieurs items (villes insérer dans une BDD remplie par Prestataire afin de l’utiliser dynamiquement et remplir la BDD) (Déborah / Andréa)
+- CSS/SASS (Sarah / Benjamin)
+- HTML (JSX) (Andréa / Sarah / Benjamin / Déborah)
 - Accessibilité (Déborah)
 - API : Google map (GMaps / <https://leafletjs.com/>), hôtel/restaurant (<https://developers.google.com/hotels?hl=fr>)
 
@@ -91,16 +91,18 @@ Quali-extra est une plateforme numérique innovante visant à révolutionner l'e
     - Homepage Presta
       - Création de compte ?
         - Ajouter un Établissement
-          - Ajouter un Services
+          - Ajouter un/des Service(s)
+            - Ajouter un/des Forfait(s)
         - Liste des commandes
       - Liste des services
   - Bloc « Admin »
     - Log Admin
       - Homepage Admin
-        - Validation des comptes prestataires ?
-        - Liste des comptes Prestataires
-        - Liste des comptes Clients
-        - Listes de commandes (traçabilité entre les clients et les prestataires).
+        - Dashboard gestion :
+          - Validation des comptes prestataires ?
+          - Liste des comptes Prestataires
+          - Liste des comptes Clients
+          - Listes de commandes (traçabilité entre les clients et les prestataires).
 
 [arborescence en image](/img/Arborescence_Projet_Tuture.png)
 
@@ -108,42 +110,192 @@ Quali-extra est une plateforme numérique innovante visant à révolutionner l'e
 
 ### front prévues
 
-- /
-- /auth
-  - /auth/register
-  - /auth/logging
-    - /user
-      - /search
-      - /search-result
-      - /booking
-      - /favorites
-      - /dashboard
-    - /provider
-      - /service-list
-      - /list-order
-      - /add-property
-      - /add-service
-    - /admin
-      - /add-provider
-      - /list-order
-      - /list-user
-      - /list-provider
-- /search
-- /contact
-- /how-it-work
+- / -
+- /auth -
+- /404 -
+- /search -
+- /package/:id -
+  - /my-account (user) -
+    - /dashboard x
+      - /my-wishlist -
+      - /my-reservation -
+    - /final-reservation -
+    - /confirmation-reservation -
+  - /provider
+    - /calendar -
+      - /my-properties -
+      - /add-property -
+      - /add-package -
+      - /add-service -
+  - /my-adminAccount -
+    - /dashboard ~
+      - /add-provider -
+      - /clients-orders -
+      - /clients-list -
+      - /list-provider -
+<!-- - /contact
 - /referencing
 - /help-customer
 - /legal-notice
 - /terms-conditions
 - /privacy-policy
-- /feedback
-- /404
+- /feedback -->
 <!-- - /search/shoppingBag/logging -->
 <!-- - /search/ shoppingBag/signIn -->
 
 ### Routes Back:/ (méthode ( get, post, put, delete) sur la même route  pour varier les actions)
 
-[tableau des routes back](/img/tableau_back_1-4.png)
-[tableau des routes back](/img/tableau_back_2-4.png)
-[tableau des routes back](/img/tableau_back_3-4.png)
-[tableau des routes back](/img/tableau_back_4-4.png)
+``` js
+// récupérer de toutes les catégories
+categoriesRouter.get('/categories', packageProviderController.getCategories);
+
+// récupérer une catégorie
+categoriesRouter.get('/categories/:id',);
+
+// créer une catégorie
+categoriesRouter.post('/categories', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.addCategory);
+
+// modifier une catégorie
+categoriesRouter.put('/categories/:id', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.updateCategory);
+
+// supprimer une catégorie
+categoriesRouter.delete('/categories/:id', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.deleteCategory);```
+
+```js
+/récupérer tous les établissements , jwtGuard, roleGuard({ role: ['admin', 'provider'] })
+institutionRouter.get('/institution', institutionProviderController.getAllInstitutions)
+
+//récupérer un établissement 
+institutionRouter.get('/institution/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), institutionProviderController.getOneInstitution)
+
+//récupérer un service selon id de l'institution
+institutionRouter.get('/institutions/:id/services', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), serviceProviderController.getAllServicesByInstitutionId);
+
+
+//ajouter un établissement
+institutionRouter.post('/institution', jwtGuard, roleGuard({ roles: ['provider'] }), institutionProviderController.addInstitution)
+
+//modifier un établissement 
+institutionRouter.put('/institution/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), institutionProviderController.updateInstitution)
+
+//supprimer un établissement
+institutionRouter.delete('/institution/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), institutionProviderController.deleteInstitution)
+```
+```js
+//route de création des users
+loginRouter.post('/register', authController.register)
+//route de création des provider(uniquement créer par l'admin)
+
+//a rajouter une fois les tests finis :  
+loginRouter.post('/register-provider', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.registerProvider)
+
+//route pour la connexion
+loginRouter.post('/login', authController.login);
+
+// 
+loginRouter.get('/validation-email/:token', authController.validationEmail);
+
+
+//route pour le profil
+loginRouter.get('/profile', jwtGuard, userController.profile);
+
+```
+
+```js
+//récupérer les meilleurs packages pour affichage page Home
+packagesRouter.get('/packages/:id/favorites', packageProviderController.bestPackageHome);
+
+//récupérer tous les packages
+packagesRouter.get('/packages', packageProviderController.getAllPackages);
+
+//récupérer un package selon son id   
+packagesRouter.get('/package/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider', 'user'] }), packageProviderController.getOnePackage);
+
+//récupérer l'identifant d'un package pour avoir avoir son prix
+packagesRouter.get('/packages/:id/prices', jwtGuard, roleGuard({ roles: ['provider'] }), packageProviderController.getOnePrice);
+
+//création packages
+packagesRouter.post('/packages', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), packageProviderController.addPackage);
+
+//ajout de service dans package
+// jwtGuard, roleGuard({ roles: ['admin', 'provider'] }),
+packagesRouter.post('/package/service', packageProviderController.addServiceToPackage)
+
+//gestion de la quantité du stock et disponibilité
+packagesRouter.put('/purchases/packages/:id', availableController.availabilityManagement);
+
+//modification du forfait 
+packagesRouter.put('/packages/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), packageProviderController.updatePackage);
+
+//supprimer forfait 
+packagesRouter.delete('/packages/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), packageProviderController.deletePackage);
+```
+
+```js
+// route de recherche
+searchRouter.get('/search', userController.search);
+```
+```js
+//récupérer tous les services
+servicesRouter.get('/services', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), serviceProviderController.getAllServices);
+
+// récupérer un service
+servicesRouter.get('/services/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), serviceProviderController.getOneService);
+
+// créer un service
+servicesRouter.post('/services', jwtGuard, roleGuard({ roles: ['provider'] }), serviceProviderController.addService);
+
+// 'modifier un service'
+servicesRouter.put('/services/:id', jwtGuard, roleGuard({ roles: ['provider'] }), serviceProviderController.updateService);
+
+// 'supprimer un service'
+servicesRouter.delete('/services/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), serviceProviderController.deleteService);
+```
+
+```js
+//permet d'aller récupérer tous les users 
+usersRouter.get('/users', adminController.getAll)
+//permet d'aller récupérer tous les users role provider
+usersRouter.get('/users_provider', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.getAllProvider)
+
+//récupérer un utilisateur selon son identifiant 
+usersRouter.get('/users/:id', jwtGuard, roleGuard({ roles: ['admin', 'provider'] }), adminController.getOneUser);
+
+//récupérer un utilisateur provider selon son identifiant 
+usersRouter.get('/users_provider/:id', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.getOneProvider);
+
+//récupérer un service selon son identifiant par le provider
+usersRouter.get('/users_provider/:id/services/:id', jwtGuard, roleGuard({ roles: ['provider'] }), serviceProviderController.getOneServiceByProviderId );
+
+//récupérer toutes institutions selon id utilisateur
+usersRouter.get('/users_provider/:id/institutions', jwtGuard, roleGuard({ roles: ['provider'] }), institutionProviderController.getAllInstitutionByProviderId);
+
+// récuperer les pkgs d'un service un institutions d'un prestataire
+usersRouter.get('/users_provider/:id/institutions/:id/service/:id/packages', jwtGuard, roleGuard({ roles: ['provider'] }));
+
+// récuperer les services d'une institutions d'un prestataire
+usersRouter.get('/users_provider/:id/institutions/:id/services', jwtGuard, roleGuard({ roles: ['provider'] }), serviceProviderController.getAllServicesByInstitutionId);
+
+//récupérer une commande selon id utilisateur
+usersRouter.get('/users/:id/purchases', jwtGuard, roleGuard({ roles: ['admin, provider'] }), userController.getAllPurchasesByUserId)
+
+//modifier le profil utilisateur 
+usersRouter.put('/users/:id', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.updateUser);
+
+//supprimer le profil utilisateur   
+usersRouter.delete('/users/:userId', jwtGuard, roleGuard({ roles: ['admin'] }), adminController.deleteUser);
+```
+
+```js
+// récupérer toute la liste des favoris 
+wishlistRouter.get('/wishlist', jwtGuard, roleGuard({ roles: ['user'] }));
+
+// recupérer une liste favorie
+wishlistRouter.get('/wishlist/:id', jwtGuard, roleGuard({ roles: ['user'] }));
+
+// créer un favoris
+wishlistRouter.post('/wishlist', jwtGuard, roleGuard({ roles: ['user'] }));
+
+// supprimer un favoris
+wishlistRouter.delete('/wishlist/:id', jwtGuard, roleGuard({ roles: ['user'] }));
+```
