@@ -36,7 +36,7 @@ import AddPackage from "../../Pages/providerPages/AddPackage"
 const App = () => {
     const { autoConnect } = UseSignInStore();
 
-    //!faire un useeffect pour connecter utilisateur si presence de token pour persistance de la connexion
+    //!faire un useEffect pour connecter utilisateur si presence de token pour persistance de la connexion
     useEffect(() => {
         console.log('useEffect')
         autoConnect();

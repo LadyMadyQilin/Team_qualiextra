@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import dotenv from "dotenv";
-import adminCheckRole from "../../utils/role.js";
 import nodemailer from 'nodemailer';
 
 dotenv.config();
@@ -131,14 +130,14 @@ const authController = {
 
     login: async (req, res) => {
       const { email, password } = req.body;
-
       try {
         // J'attend qu'un seul utilisateur de ma bdd soit relier à un email
         const foundUser = await User.findOne({
           where: {
-            email: email.toLowerCase(),
-          },
+            email: email.toLowerCase()
+          }
         });
+
         // Si il y a bien un utilisateur avec cet email
         if (foundUser) {
           const passwordMatching = await bcrypt.compare(
@@ -147,6 +146,8 @@ const authController = {
           );
 
           if (passwordMatching) {
+            console.log(passwordMatching)
+            console.log('test')
             const token = jwt.sign(
               { userId: foundUser.id, role: foundUser.role },
               process.env.SECRET,
@@ -161,15 +162,15 @@ const authController = {
             res.json({ token, user: foundUser });
             // sinon je renvoie une page non-autoriser
           } else {
-            res.status(401).json({ message: "Unauthorized" });
+            res.status(401).json({ message: "Unauthorized 1" });
           }
           // sinon je renvoie une page non-autoriser
         } else {
-          res.status(401).json({ message: "Unauthorized" });
+          res.status(401).json({ message: "Unauthorized 2" });
         }
         // sinon je renvoie une page non-autoriser
       } catch (error) {
-        res.status(401).json({ message: "Unauthorized" });
+        res.status(401).json({ message: "Unauthorized 3" });
       }
     },
     validationEmail: async (req, res) => {

@@ -8,7 +8,7 @@ const User = sequelize.define('User', {
         autoIncrement: true,
     },
     role: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(10),
         allowNull: true,
         defaultValue: 'user',
     },
@@ -21,11 +21,11 @@ const User = sequelize.define('User', {
         allowNull: false,
     },
     password: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(64),
         allowNull: false,
     },
     email: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: false,
     },

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+
 const apiUrl = process.env.REACT_URL_API;
 //fonction qui crée un store 
 export const UseSignInStore = create((set, get) => {
@@ -15,11 +16,17 @@ export const UseSignInStore = create((set, get) => {
 
         handleChange: (event) => {
             const { name, value } = event.target;
+
+            console.log(name, value)
+
             set((state) => {
+
                 // Je fais une copie de data contenu dans le state
                 const { data } = state;
+                console.log(data);
                 // Je modifie la valeur correspondant au name sur ma copie de data
                 data[name] = value;
+
                 // J'écrase l'ancien state par celui-ci via un spread-operator
                 return {
                     ...state,
@@ -29,16 +36,31 @@ export const UseSignInStore = create((set, get) => {
         },
         //fonction asynchrone qui envoi la requette http en POST avec les données utilisateur 
         postSignIn: async () => {
-            const response = await axios.post(`${apiUrl}/login`, get().data)
-            // Stocker le token dans le localStorage
-            localStorage.setItem('token', response.data.token);
-            // Configurer axios pour envoyer le token avec chaque requête
-            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-            // Mettre à jour l'état isLoggedIn et isAdmin
-            set(state => ({ ...state, isLoggedIn: true, user: response.data.user }));
-            // Rediriger vers la page d'accueil
-            // Remplacez '/home' par le chemin de votre page d'accueil
-            window.alert(response.data);
+            try {
+                const { data } = useState(true);
+                console.log(data);
+
+                const response = await axios.post(`${apiUrl}/login`, data);
+                const { token, user } = response.data;
+
+                // Stocker le token dans le localStorage
+                localStorage.setItem('token', token);
+
+                // Configurer axios pour envoyer le token avec chaque requête
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+                // Mettre à jour l'état isLoggedIn et user
+                set({
+                    isLoggedIn: true,
+                    user,
+                });
+
+                // Rediriger vers la page d'accueil (remplacez '/home' par le chemin de votre page d'accueil)
+                // window.location.replace('/home');
+            } catch (error) {
+                console.error('Error during login:', error);
+                // Gérez l'erreur ou affichez un message d'erreur à l'utilisateur si nécessaire
+            }
         },
 
         autoConnect: async () => {
@@ -47,7 +69,7 @@ export const UseSignInStore = create((set, get) => {
                 return
             }
             try {
-                const response = await axios.get(`${apiUrl}/profile`,
+                const response = await axios.get('http://localhost:3000/profile',
                     {
                         headers: {
                             Authorization: "Bearer " + (token)
@@ -61,6 +83,7 @@ export const UseSignInStore = create((set, get) => {
 
             } catch (error) {
                 set(state => ({ ...state, triedAutoConnect: true }));
+                console.log(error.message)
                 localStorage.removeItem('token')
             }
 
