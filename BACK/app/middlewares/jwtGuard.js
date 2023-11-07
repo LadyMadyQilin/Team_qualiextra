@@ -46,11 +46,3 @@ export const jwtGuard = async (req, res, next) => {
         return res.status(401).send(error.message);
     }
 }
-
-// quand le token apparait dans le terminal (user_login)
-// alors je veux récupéré ce token
-// pour le faire vérifier dans ma bdd
-// ? SELECT password FROM User
-// si je le trouve avec le bearer devant je revois l'utilisateur sur sa page de profil
-// si non 401
-// 
