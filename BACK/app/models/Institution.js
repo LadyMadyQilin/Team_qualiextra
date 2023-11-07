@@ -31,7 +31,7 @@ const Institution = sequelize.define('Institution', {
         allowNull: true,
     },
     phone_ins: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
     },
     average_price: {
