@@ -2,16 +2,21 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../sequelize.js';
 
 const Institution = sequelize.define('Institution', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
     name_ins: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.STRING(255),
+        allowNull: false,
     },
     cover: {
         type: DataTypes.STRING,
         allowNull: true,
     },
     email_ins: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
         unique: true, // Cette propriété doit être unique
         // validate: {
@@ -19,11 +24,11 @@ const Institution = sequelize.define('Institution', {
         // },
     },
     adress_ins: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
     city_ins: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
     cp_ins: {
@@ -31,20 +36,20 @@ const Institution = sequelize.define('Institution', {
         allowNull: true,
     },
     phone_ins: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
     average_price: {
         type: DataTypes.INTEGER,
         allowNull: true,
     },
     experiences: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
     user_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     }
 
 })
